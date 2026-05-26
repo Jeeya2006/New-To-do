@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/9fe868f5d5.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="images/todo-2.webp">
+</head>
+<style>
+    #task-list{
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    #task-list::-webkit-scrollbar{
+        width: 8px;
+        opacity: 0;
+    }
+
+    #task-list::-webkit-scrollbar-thumb{
+        background: transparent;
+    }
+</style>
+<body class="bg-zinc-900 text-white">
+    <!-- Main Container -->
+    <div class="w-full min-h-screen bg-zinc-900 text-white p-10 flex justify-center items-center">
+        <div class="w-full max-w-md bg-zinc-800 rounded-lg shadow-lg p-6 space-y-6">
+            <h1 class="text-3xl font-bold text-center text-zinc-300">To-Do List</h1>
+            <!-- Input Section to Add Task -->
+            <div class="flex items-center space-x-3">
+                <input id="task-input" type="text" placeholder="Add a new task" class="w-full p-4 border-2 border-zinc-600 rounded-lg focus:outline-none text-white bg-zinc-800 ">
+                <button id="add-task" class="p-3 bg-zinc-700 rounded-full text-white hover:bg-green-800 focus:outline-none">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <!-- Task List -->
+            <ul class="space-y-4" id="task-list">
+            </ul>
+        </div>
+    </div>
+    <script>
+        const taskInput = document.getElementById('task-input');
+        const addTaskbtn = document.getElementById('add-task');
+        const taskList = document.getElementById('task-list');
+
+        // Function to add task
+        function addTask(taskContent){
+            const taskItem = document.createElement('li');
+            taskItem.classList.add('flex','items-center','justify-between','p-4','bg-zinc-700','rounded-lg','shadow-md');
+
+            const taskText = document.createElement('span');
+            taskText.classList.add('text-gray-100');
+            taskText.textContent = taskContent;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('text-gray-500','hover:text-red-400','focus:outline-none');
+            deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+
+            // Append Task
+            taskItem.appendChild(taskText);
+            taskItem.appendChild(deleteButton);
+
+            taskList.appendChild(taskItem);
+
+            taskInput.value='';
+
+            // Delete Button
+            deleteButton.addEventListener('click',()=>{
+                taskList.removeChild(taskItem);
+            });
+        }
+
+        // Add task pressing plus icon
+        addTaskbtn.addEventListener('click',()=>{
+            const taskContent = taskInput.value.trim();
+            if(taskContent){
+                addTask(taskContent)
+            }
+        });
+
+        // Add task using Enter key
+        taskInput.addEventListener('keypress',(e)=>{
+            if(e.key=="Enter"){
+                const taskContent = taskInput.value.trim();
+                if(taskContent){
+                    addTask(taskContent);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
